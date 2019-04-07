@@ -7,6 +7,7 @@
 
 namespace Sundew.Xaml.Optimization.Xml
 {
+    using System;
     using System.Linq;
     using System.Xml.Linq;
 
@@ -15,24 +16,47 @@ namespace Sundew.Xaml.Optimization.Xml
     /// </summary>
     public static class XNamespaceInserter
     {
-        /// <summary>Tries the add XML namespace.</summary>
+        /// <summary>Ensures that the specified namespace exists.</summary>
         /// <param name="xElement">The x element.</param>
-        /// <param name="attributeName">The attribute name.</param>
         /// <param name="xNamespace">The x namespace.</param>
-        /// <param name="insertAfterName">Name of the insert after.</param>
-        /// <param name="maxInsertPosition">The maximum insert position to use if the insert after name does not exist.</param>
-        public static void TryAddXmlNamespace(this XElement xElement, XName attributeName, XNamespace xNamespace, XName insertAfterName, int maxInsertPosition)
+        /// <param name="prefix">The prefix in case the namespace does not exist.</param>
+        /// <param name="maxInsertIndex">The maximum insert index to use if the insert after name does not exist.</param>
+        /// <param name="insertAfterNamespaces">The namespaces to insert the namespace after.</param>
+        /// <returns>
+        ///   <c>true</c>, if the namespace was added, otherwise <c>false</c>.
+        /// </returns>
+        public static XAttribute EnsureXmlNamespaceAttribute(this XElement xElement, XNamespace xNamespace, string prefix, int maxInsertIndex, params XNamespace[] insertAfterNamespaces)
         {
-            var namespaceNumber = 1;
-            XAttribute xAttribute;
-            while ((xAttribute = xElement.Attribute(attributeName)) != null)
-            {
-                if (xAttribute.Value == xNamespace)
-                {
-                    return;
-                }
+            return PrivateEnsureXmlNamespaceAttribute(xElement, xNamespace, prefix, insertAfterNamespaces, maxInsertIndex);
+        }
 
-                attributeName += namespaceNumber.ToString();
+        /// <summary>Ensures the XML namespace attribute.</summary>
+        /// <param name="xElement">The x element.</param>
+        /// <param name="xNamespace">The x namespace.</param>
+        /// <param name="prefix">The prefix.</param>
+        /// <param name="insertAfterNamespaces">The namespaces to insert the namespace after.</param>
+        /// <returns>
+        ///   <c>true</c>, if the namespace was added, otherwise <c>false</c>.
+        /// </returns>
+        public static XAttribute EnsureXmlNamespaceAttribute(this XElement xElement, XNamespace xNamespace, string prefix, params XNamespace[] insertAfterNamespaces)
+        {
+            return PrivateEnsureXmlNamespaceAttribute(xElement, xNamespace, prefix, insertAfterNamespaces, null);
+        }
+
+        private static XAttribute PrivateEnsureXmlNamespaceAttribute(this XElement xElement, XNamespace xNamespace, string prefix, XNamespace[] insertAfterNamespaces, int? maxInsertIndex)
+        {
+            var xAttribute = FindNamespaceAttribute(xElement, xNamespace);
+            if (xAttribute != null)
+            {
+                return xAttribute;
+            }
+
+            var namespaceNumber = 1;
+            var attributeName = XNamespace.Xmlns + prefix;
+            var bareAttributeName = attributeName;
+            while (xElement.Attribute(attributeName) != null)
+            {
+                attributeName = bareAttributeName + namespaceNumber.ToString();
                 namespaceNumber++;
             }
 
@@ -42,22 +66,38 @@ namespace Sundew.Xaml.Optimization.Xml
                 attribute.Remove();
             }
 
-            var xAttributeIndex = attributes.FindIndex(x => x.Name == insertAfterName);
+            var xAttributeIndex = insertAfterNamespaces.Select(insertAfterNamespace => attributes.FindIndex(x => x.Value == insertAfterNamespace)).Max();
             if (xAttributeIndex < 0)
             {
-                xAttributeIndex = attributes.Count >= maxInsertPosition
-                    ? maxInsertPosition
-                    : attributes.Count;
+                xAttributeIndex = attributes.Count;
             }
             else
             {
                 xAttributeIndex++;
             }
 
-            attributes.Insert(
-                xAttributeIndex,
-                new XAttribute(attributeName, xNamespace));
+            if (maxInsertIndex.HasValue)
+            {
+                xAttributeIndex = Math.Min(xAttributeIndex, maxInsertIndex.Value);
+            }
+
+            var newXAttribute = new XAttribute(attributeName, xNamespace);
+            attributes.Insert(Math.Min(xAttributeIndex, attributes.Count), newXAttribute);
             xElement.Add(attributes);
+            return newXAttribute;
+        }
+
+        private static XAttribute FindNamespaceAttribute(XElement xElement, XNamespace xNamespace)
+        {
+            foreach (var xAttribute in xElement.Attributes())
+            {
+                if (xAttribute.Value == xNamespace)
+                {
+                    return xAttribute;
+                }
+            }
+
+            return null;
         }
     }
 }

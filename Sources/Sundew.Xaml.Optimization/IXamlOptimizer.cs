@@ -20,10 +20,11 @@ namespace Sundew.Xaml.Optimization
         IReadOnlyList<XamlPlatform> SupportedPlatforms { get; }
 
         /// <summary>Optimizes the specified xml document.</summary>
-        /// <param name="fileInfo">The file info.</param>
         /// <param name="xDocument">The xml document.</param>
+        /// <param name="fileInfo">The file info.</param>
         /// <param name="intermediateDirectory">The intermediate directory.</param>
+        /// <param name="assemblyReferences">The assembly references.</param>
         /// <returns>The result of the xaml optimization.</returns>
-        Result<XamlOptimization> Optimize(FileInfo fileInfo, XDocument xDocument, DirectoryInfo intermediateDirectory);
+        Result<XamlOptimization> Optimize(XDocument xDocument, FileInfo fileInfo, DirectoryInfo intermediateDirectory, IReadOnlyList<IAssemblyReference> assemblyReferences);
     }
 }
