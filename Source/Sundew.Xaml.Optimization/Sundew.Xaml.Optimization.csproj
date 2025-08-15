@@ -9,16 +9,15 @@
 2.0.0 - Extended XamlPlatformInfo, added XNamespaceInserter and IAssemblyReference.
 1.0.0 - Initial version
     </PackageReleaseNotes>
-  </PropertyGroup>
+		<DocumentationFile>$(OutputPath)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+	</PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
-    <DocumentationFile>D:\Kim\Repos\Sundew.Xaml\Sources\Sundew.Xaml.Optimization\Sundew.Xaml.Optimization.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>D:\Kim\Repos\Sundew.Xaml\Sources\Sundew.Xaml.Optimization\Sundew.Xaml.Optimization.xml</DocumentationFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
   </PropertyGroup>
