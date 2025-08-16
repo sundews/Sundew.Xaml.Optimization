@@ -61,11 +61,6 @@ public static class XNamespaceInserter
         }
 
         var attributes = xElement.Attributes().ToList();
-        foreach (var attribute in attributes)
-        {
-            attribute.Remove();
-        }
-
         var xAttributeIndex = insertAfterNamespaces.Select(insertAfterNamespace => attributes.FindIndex(x => x.Value == insertAfterNamespace)).Max();
         if (xAttributeIndex < 0)
         {
@@ -82,8 +77,10 @@ public static class XNamespaceInserter
         }
 
         var newXAttribute = new XAttribute(attributeName, xNamespace);
-        attributes.Insert(Math.Min(xAttributeIndex, attributes.Count), newXAttribute);
-        xElement.Add(attributes);
+        var insertIndex = Math.Min(xAttributeIndex, attributes.Count);
+        attributes.Insert(insertIndex, newXAttribute);
+        xElement.ReplaceAttributes(attributes);
+
         return newXAttribute;
     }
 

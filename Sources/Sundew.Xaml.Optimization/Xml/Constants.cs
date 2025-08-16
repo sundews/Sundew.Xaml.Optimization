@@ -11,7 +11,7 @@ using System.Xml.Linq;
 
 internal static class Constants
 {
-    public const string SystemPrefix = "system";
+    public const string DefaultPrefix = "default";
     public const string XamlPrefix = "x";
     public const string MarkupCompatibilityPrefix = "mc";
     public const string DesignerPrefix = "d";
