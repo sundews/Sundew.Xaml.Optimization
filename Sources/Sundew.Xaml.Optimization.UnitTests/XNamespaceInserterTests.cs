@@ -37,7 +37,7 @@ public class XNamespaceInserterTests
         var expectedAttribute = new XAttribute(PresentationOptionsName, PresentationOptionsNamespace);
 
         var result = xDocument.Root!
-            .EnsureXmlNamespaceAttribute(PresentationOptionsNamespace, PoName, 3, Constants.XamlNamespace);
+            .EnsureXmlNamespaceAttribute(PresentationOptionsNamespace, PoName, 3, Constants.DefaultXamlNamespace);
 
         result.Should().Be(expectedAttribute);
         xDocument.ToString().Should().Be(XDocument.Parse(input).ToString());
@@ -66,7 +66,7 @@ public class XNamespaceInserterTests
         var expectedAttribute = new XAttribute(PresentationOptionsName, PresentationOptionsNamespace);
 
         var result = xDocument.Root!
-            .EnsureXmlNamespaceAttribute(PresentationOptionsNamespace, PoName, 3, Constants.XamlNamespace);
+            .EnsureXmlNamespaceAttribute(PresentationOptionsNamespace, PoName, 3, Constants.DefaultXamlNamespace);
 
         result.Should().Be(expectedAttribute);
         xDocument.ToString().Should().Be(XDocument.Parse(expectedResult).ToString());
@@ -95,7 +95,7 @@ public class XNamespaceInserterTests
         var expectedAttribute = new XAttribute(PresentationOptionsName + "1", PresentationOptionsNamespace);
 
         var result = xDocument.Root!
-            .EnsureXmlNamespaceAttribute(PresentationOptionsNamespace, PoName, 3, Constants.XamlNamespace);
+            .EnsureXmlNamespaceAttribute(PresentationOptionsNamespace, PoName, 3, Constants.DefaultXamlNamespace);
 
         result.Should().Be(expectedAttribute);
         xDocument.ToString().Should().Be(XDocument.Parse(expectedResult).ToString());
@@ -162,7 +162,7 @@ public class XNamespaceInserterTests
             .EnsureXmlNamespaceAttribute(
                 PresentationOptionsNamespace,
                 PoName,
-                Constants.XamlNamespace,
+                Constants.DefaultXamlNamespace,
                 Constants.DesignerNamespace,
                 Constants.MarkupCompatibilityNamespace);
 
@@ -195,7 +195,7 @@ public class XNamespaceInserterTests
             .EnsureXmlNamespaceAttribute(
                 PresentationOptionsNamespace,
                 PoName,
-                Constants.XamlNamespace,
+                Constants.DefaultXamlNamespace,
                 Constants.DesignerNamespace,
                 Constants.MarkupCompatibilityNamespace);
 
