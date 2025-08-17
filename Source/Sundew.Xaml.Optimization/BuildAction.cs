@@ -19,6 +19,12 @@ public enum BuildAction
     /// <summary>The page.</summary>
     Page,
 
+    /// <summary>The Maui Xaml.</summary>
+    MauiXaml,
+
+    /// <summary>The Avalonia Xaml.</summary>
+    AvaloniaXaml,
+
     /// <summary>The embedded resource.</summary>
     EmbeddedResource,
 
