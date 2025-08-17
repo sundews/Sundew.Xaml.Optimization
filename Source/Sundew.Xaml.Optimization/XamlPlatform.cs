@@ -13,6 +13,15 @@ public enum XamlPlatform
     /// <summary>The WPF platform.</summary>
     WPF,
 
+    /// <summary>The Maui platform.</summary>
+    Maui,
+
+    /// <summary>The WinUI platform.</summary>
+    WinUI,
+
+    /// <summary>The Avalonia platform.</summary>
+    Avalonia,
+
     /// <summary>The UWP platform.</summary>
     UWP,
 
