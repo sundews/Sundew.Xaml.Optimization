@@ -21,4 +21,10 @@ public enum FileAction
 
     /// <summary>The additional file will be included as an additional file.</summary>
     AdditionalFile,
+
+    /// <summary>The Maui Xaml.</summary>
+    MauiXaml,
+
+    /// <summary>The Avalonia Xaml.</summary>
+    AvaloniaXaml,
 }

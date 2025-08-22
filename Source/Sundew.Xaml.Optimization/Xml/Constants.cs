@@ -26,6 +26,7 @@ internal static class Constants
     public static readonly XNamespace MauiXamlNamespace = "http://schemas.microsoft.com/winfx/2009/xaml";
     public static readonly XNamespace DefaultXamlNamespace = "http://schemas.microsoft.com/winfx/2006/xaml";
     public static readonly XNamespace DesignerNamespace = "http://schemas.microsoft.com/expression/blend/2008";
+    public static readonly XNamespace SundewXamlNamespace = "http://sundew.dev/xaml";
     public static readonly XNamespace MarkupCompatibilityNamespace = "http://schemas.openxmlformats.org/markup-compatibility/2006";
     public static readonly XName IgnorableName = MarkupCompatibilityNamespace + IgnorableText;
 }

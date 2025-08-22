@@ -14,19 +14,19 @@ using System.Xml.Linq;
 /// <summary>The result of a xaml optimization.</summary>
 public sealed class OptimizationResult
 {
-    private static readonly AdditionalFile[] EmptyAdditionalFiles = new AdditionalFile[0];
-
     /// <summary>
     /// Initializes a new instance of the <see cref="OptimizationResult" /> class.
     /// </summary>
     /// <param name="xDocument">The x document.</param>
     /// <param name="additionalFiles">The additional files.</param>
     /// <param name="isSuccess">if set to <c>true</c> [is success].</param>
-    private OptimizationResult(XDocument? xDocument, IReadOnlyList<AdditionalFile> additionalFiles, bool isSuccess)
+    /// <param name="xamlDiagnostics">The xaml diagnostics.</param>
+    private OptimizationResult(XDocument? xDocument, IReadOnlyList<AdditionalFile> additionalFiles, bool isSuccess, IReadOnlyList<XamlDiagnostic> xamlDiagnostics)
     {
         this.XDocument = xDocument;
-        this.AdditionalFiles = additionalFiles ?? EmptyAdditionalFiles;
+        this.AdditionalFiles = additionalFiles;
         this.IsSuccess = isSuccess;
+        this.XamlDiagnostics = xamlDiagnostics;
     }
 
     /// <summary>Gets the x document.</summary>
@@ -47,12 +47,18 @@ public sealed class OptimizationResult
     public bool IsSuccess { get; }
 
     /// <summary>
+    /// Gets the xaml diagnostics.
+    /// </summary>
+    public IReadOnlyList<XamlDiagnostic> XamlDiagnostics { get; }
+
+    /// <summary>
     /// Performs an implicit conversion from <see cref="OptimizationResult"/> to <see cref="bool"/>.
     /// </summary>
     /// <param name="optimizationResult">The optimization result.</param>
     /// <returns>
     /// The result of the conversion.
     /// </returns>
+    [MemberNotNullWhen(true, nameof(XDocument))]
     public static implicit operator bool(OptimizationResult optimizationResult)
     {
         return optimizationResult.IsSuccess;
@@ -63,19 +69,21 @@ public sealed class OptimizationResult
     /// </summary>
     /// <param name="xDocument">The x document.</param>
     /// <param name="additionalFiles">The additional files.</param>
+    /// <param name="xamlDiagnostics">The xaml diagnostics.</param>
     /// <returns>A new <see cref="OptimizationResult"/>.</returns>
-    public static OptimizationResult Success(XDocument xDocument, IReadOnlyList<AdditionalFile>? additionalFiles = null)
+    public static OptimizationResult Success(XDocument xDocument, IReadOnlyList<AdditionalFile>? additionalFiles = null, params IReadOnlyList<XamlDiagnostic> xamlDiagnostics)
     {
-        return new OptimizationResult(xDocument, additionalFiles ?? [], true);
+        return new OptimizationResult(xDocument, additionalFiles ?? [], true, xamlDiagnostics);
     }
 
     /// <summary>
-    /// Gets and error result.
+    /// Gets a result with no modifications.
     /// </summary>
+    /// <param name="xamlDiagnostics">The xaml diagnostics.</param>
     /// <returns>A new <see cref="OptimizationResult"/>.</returns>
-    public static OptimizationResult Error()
+    public static OptimizationResult None(params IReadOnlyList<XamlDiagnostic> xamlDiagnostics)
     {
-        return new OptimizationResult(null, [], false);
+        return new OptimizationResult(null, [], false, xamlDiagnostics);
     }
 
     /// <summary>
@@ -84,11 +92,12 @@ public sealed class OptimizationResult
     /// <param name="isSuccess">if set to <c>true</c> [is success].</param>
     /// <param name="xDocument">The x document.</param>
     /// <param name="additionalFiles">The additional files.</param>
+    /// <param name="xamlDiagnostics">The xaml diagnostics.</param>
     /// <returns>
     /// A new <see cref="OptimizationResult" />.
     /// </returns>
-    public static OptimizationResult From(bool isSuccess, XDocument xDocument, IReadOnlyList<AdditionalFile>? additionalFiles = null)
+    public static OptimizationResult From(bool isSuccess, XDocument xDocument, IReadOnlyList<AdditionalFile>? additionalFiles = null, params IReadOnlyList<XamlDiagnostic> xamlDiagnostics)
     {
-        return new OptimizationResult(xDocument, [], isSuccess);
+        return new OptimizationResult(xDocument, [], isSuccess, xamlDiagnostics);
     }
 }

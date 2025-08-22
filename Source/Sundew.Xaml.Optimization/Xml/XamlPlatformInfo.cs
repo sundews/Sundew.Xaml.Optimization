@@ -35,6 +35,16 @@ public class XamlPlatformInfo
         xmlNamespaceManager.AddNamespace(Constants.DesignerPrefix, Constants.DesignerNamespace.NamespaceName);
         this.XmlNamespaceResolver = xmlNamespaceManager;
         this.SystemResourceDictionaryName = this.PresentationNamespace + Constants.ResourceDictionaryText;
+        this.DefaultFileAction = xamlPlatform switch
+        {
+            XamlPlatform.WPF => FileAction.Page,
+            XamlPlatform.Maui => FileAction.MauiXaml,
+            XamlPlatform.WinUI => FileAction.Page,
+            XamlPlatform.Avalonia => FileAction.AvaloniaXaml,
+            XamlPlatform.UWP => FileAction.Page,
+            XamlPlatform.XF => FileAction.Page,
+            _ => FileAction.Page,
+        };
     }
 
     /// <summary>
@@ -85,7 +95,12 @@ public class XamlPlatformInfo
     /// <value>The designer.</value>
     public string DesignerPrefix => Constants.DesignerPrefix;
 
+    /// <summary>
+    /// Gets the default file action.
+    /// </summary>
+    public FileAction DefaultFileAction { get; }
+
     /// <summary>Gets the default insert after namespaces.</summary>
     /// <value>The default insert after namespaces.</value>
-    public XNamespace[] DefaultInsertAfterNamespaces { get; } = [Constants.DefaultXamlNamespace, Constants.DesignerNamespace, Constants.MarkupCompatibilityNamespace];
+    public XNamespace[] DefaultInsertAfterNamespaces { get; } = [Constants.DefaultXamlNamespace, Constants.DesignerNamespace, Constants.MarkupCompatibilityNamespace, Constants.SundewXamlNamespace];
 }
