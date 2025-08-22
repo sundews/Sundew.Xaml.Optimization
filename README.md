@@ -19,8 +19,8 @@ Constructors in xaml optimizer are flexible and can accept various parameters:
 * [XamlPlatformInfo](https://github.com/sundews/Sundew.Xaml.Optimization/blob/master/Source/Sundew.Xaml.Optimization/Xml/XamlPlatformInfo.cs) can be passed into the constructor and contains some basic information about the current xaml platform. 
 * [ProjectInfo](https://github.com/sundews/Sundew.Xaml.Optimization/blob/master/Source/Sundew.Xaml.Optimization/ProjectInfo.cs), which contains information about the project, e.g. target framework, output type, assembly name etc..
 * Additionally, a JObject (Json.NET) is accepted. This represents the settings for a particular optimizer in the "settings.sxos" file.
-Instead of JObject a custom type serializing the settings is also permitted.
-The parameters can occur in any order or only include the one or the other and the constructor with the most parameters will be used.
+Instead of JObject, a custom type, serializing the settings is also permitted.
+The parameters can occur in any order or only include some. The constructor with the most parameters will be used.
 
 ### Optimize method:
 The Optimize method is called for each xaml file to be optimized. The method receives the xaml an XDocument and can perform its optimization and returns an OptimizationResult.  
