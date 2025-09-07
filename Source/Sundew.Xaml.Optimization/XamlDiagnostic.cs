@@ -38,6 +38,81 @@ public record XamlDiagnostic(
     private const string Unk = "unknown";
 
     /// <summary>
+    /// Create an info diagnostics.
+    /// </summary>
+    /// <param name="code">The code.</param>
+    /// <param name="message">The message.</param>
+    /// <param name="messageArguments">The message arguments.</param>
+    /// <param name="filePath">The file path.</param>
+    /// <param name="lineNumber">The line number.</param>
+    /// <param name="columnNumber">The column number.</param>
+    /// <param name="endLineNumber">The end line number.</param>
+    /// <param name="endColumnNumber">The end column number.</param>
+    /// <returns>The xaml diagnostics.</returns>
+    public static XamlDiagnostic Info(
+        string code,
+        string message,
+        object[] messageArguments,
+        string filePath,
+        int lineNumber,
+        int columnNumber,
+        int endLineNumber,
+        int endColumnNumber)
+    {
+        return new XamlDiagnostic(code, message, messageArguments, DiagnosticSeverity.Info, filePath, lineNumber, columnNumber, endLineNumber, endColumnNumber);
+    }
+
+    /// <summary>
+    /// Creates a warning diagnostics.
+    /// </summary>
+    /// <param name="code">The code.</param>
+    /// <param name="message">The message.</param>
+    /// <param name="messageArguments">The message arguments.</param>
+    /// <param name="filePath">The file path.</param>
+    /// <param name="lineNumber">The line number.</param>
+    /// <param name="columnNumber">The column number.</param>
+    /// <param name="endLineNumber">The end line number.</param>
+    /// <param name="endColumnNumber">The end column number.</param>
+    /// <returns>The xaml diagnostics.</returns>
+    public static XamlDiagnostic Warning(
+        string code,
+        string message,
+        object[] messageArguments,
+        string filePath,
+        int lineNumber,
+        int columnNumber,
+        int endLineNumber,
+        int endColumnNumber)
+    {
+        return new XamlDiagnostic(code, message, messageArguments, DiagnosticSeverity.Warning, filePath, lineNumber, columnNumber, endLineNumber, endColumnNumber);
+    }
+
+    /// <summary>
+    /// Creates an error diagnostics.
+    /// </summary>
+    /// <param name="code">The code.</param>
+    /// <param name="message">The message.</param>
+    /// <param name="messageArguments">The message arguments.</param>
+    /// <param name="filePath">The file path.</param>
+    /// <param name="lineNumber">The line number.</param>
+    /// <param name="columnNumber">The column number.</param>
+    /// <param name="endLineNumber">The end line number.</param>
+    /// <param name="endColumnNumber">The end column number.</param>
+    /// <returns>The xaml diagnostics.</returns>
+    public static XamlDiagnostic Error(
+        string code,
+        string message,
+        object[] messageArguments,
+        string filePath,
+        int lineNumber,
+        int columnNumber,
+        int endLineNumber,
+        int endColumnNumber)
+    {
+        return new XamlDiagnostic(code, message, messageArguments, DiagnosticSeverity.Error, filePath, lineNumber, columnNumber, endLineNumber, endColumnNumber);
+    }
+
+    /// <summary>
     /// Gets the message.
     /// </summary>
     /// <returns>The message.</returns>

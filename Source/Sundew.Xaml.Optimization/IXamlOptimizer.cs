@@ -8,7 +8,7 @@
 namespace Sundew.Xaml.Optimization;
 
 using System.Collections.Generic;
-using System.Xml.Linq;
+using System.Threading.Tasks;
 
 /// <summary>Interface for implementing a xaml optimizer.</summary>
 public interface IXamlOptimizer
@@ -17,9 +17,9 @@ public interface IXamlOptimizer
     /// <value>The supported platforms.</value>
     IReadOnlyList<XamlPlatform> SupportedPlatforms { get; }
 
-    /// <summary>Optimizes the specified xml document.</summary>
-    /// <param name="xamlDocument">The xml document.</param>
-    /// <param name="xamlFile">The xaml file reference.</param>
-    /// <returns>The result of the xaml optimization.</returns>
-    OptimizationResult Optimize(XDocument xamlDocument, IFileReference xamlFile);
+    /// <summary>
+    /// Optimizes the project.
+    /// </summary>
+    /// <returns>The result of the project optimization.</returns>
+    ValueTask<OptimizationResult> OptimizeAsync(IReadOnlyList<XamlFile> xamlFiles);
 }

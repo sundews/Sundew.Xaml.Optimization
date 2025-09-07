@@ -13,19 +13,33 @@ using System.IO;
 public class AdditionalFile
 {
     /// <summary>Initializes a new instance of the <see cref="AdditionalFile"/> class.</summary>
-    /// <param name="fileAction">The file action.</param>
+    /// <param name="itemType">The file action.</param>
     /// <param name="fileInfo">The file information.</param>
-    public AdditionalFile(FileAction fileAction, FileInfo fileInfo)
+    /// <param name="link">The link.</param>
+    /// <param name="content">The content.</param>
+    public AdditionalFile(ItemType itemType, FileInfo fileInfo, string content, string? link)
     {
-        this.FileAction = fileAction;
+        this.ItemType = itemType;
         this.FileInfo = fileInfo;
+        this.Link = link;
+        this.Content = content;
     }
 
     /// <summary>Gets the file action.</summary>
     /// <value>The file action.</value>
-    public FileAction FileAction { get; }
+    public ItemType ItemType { get; }
 
     /// <summary>Gets the file information.</summary>
     /// <value>The file information.</value>
     public FileInfo FileInfo { get; }
+
+    /// <summary>
+    /// Gets the link (relative path) to use in the project file.
+    /// </summary>
+    public string? Link { get; }
+
+    /// <summary>
+    /// Gets the content of the file.
+    /// </summary>
+    public string Content { get; }
 }

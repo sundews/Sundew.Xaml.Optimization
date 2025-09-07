@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FileAction.cs" company="Sundews">
+// <copyright file="ItemType.cs" company="Sundews">
 // Copyright (c) Sundews. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -8,7 +8,7 @@
 namespace Sundew.Xaml.Optimization;
 
 /// <summary>Defines how and additional file should be treated.</summary>
-public enum FileAction
+public enum ItemType
 {
     /// <summary>The additional file will be compiled.</summary>
     Compile,

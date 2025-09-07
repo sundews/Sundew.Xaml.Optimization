@@ -8,8 +8,7 @@
 namespace Sundew.Xaml.Optimization;
 
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Xml.Linq;
+using System.Threading.Tasks;
 
 /// <summary>The result of a xaml optimization.</summary>
 public sealed class OptimizationResult
@@ -17,25 +16,15 @@ public sealed class OptimizationResult
     /// <summary>
     /// Initializes a new instance of the <see cref="OptimizationResult" /> class.
     /// </summary>
-    /// <param name="xDocument">The x document.</param>
     /// <param name="additionalFiles">The additional files.</param>
-    /// <param name="isSuccess">if set to <c>true</c> [is success].</param>
+    /// <param name="xamlFileChanges">The optimized files.</param>
     /// <param name="xamlDiagnostics">The xaml diagnostics.</param>
-    private OptimizationResult(XDocument? xDocument, IReadOnlyList<AdditionalFile> additionalFiles, bool isSuccess, IReadOnlyList<XamlDiagnostic> xamlDiagnostics)
+    private OptimizationResult(IReadOnlyCollection<XamlFileChange> xamlFileChanges, IReadOnlyCollection<AdditionalFile> additionalFiles, IReadOnlyCollection<XamlDiagnostic> xamlDiagnostics)
     {
-        this.XDocument = xDocument;
+        this.XamlFileChanges = xamlFileChanges;
         this.AdditionalFiles = additionalFiles;
-        this.IsSuccess = isSuccess;
         this.XamlDiagnostics = xamlDiagnostics;
     }
-
-    /// <summary>Gets the x document.</summary>
-    /// <value>The x document.</value>
-    public XDocument? XDocument { get; }
-
-    /// <summary>Gets the additional files.</summary>
-    /// <value>The additional files.</value>
-    public IReadOnlyList<AdditionalFile> AdditionalFiles { get; }
 
     /// <summary>
     /// Gets a value indicating whether this instance is success.
@@ -43,37 +32,50 @@ public sealed class OptimizationResult
     /// <value>
     ///   <c>true</c> if this instance is success; otherwise, <c>false</c>.
     /// </value>
-    [MemberNotNullWhen(true, nameof(XDocument))]
-    public bool IsSuccess { get; }
+    public bool IsSuccess => this.AdditionalFiles.Count > 0 || this.XamlFileChanges.Count > 0;
+
+    /// <summary>
+    /// Gets the xaml files changes.
+    /// </summary>
+    public IReadOnlyCollection<XamlFileChange> XamlFileChanges { get; }
+
+    /// <summary>Gets the additional files.</summary>
+    /// <value>The additional files.</value>
+    public IReadOnlyCollection<AdditionalFile> AdditionalFiles { get; }
 
     /// <summary>
     /// Gets the xaml diagnostics.
     /// </summary>
-    public IReadOnlyList<XamlDiagnostic> XamlDiagnostics { get; }
+    public IReadOnlyCollection<XamlDiagnostic> XamlDiagnostics { get; }
 
     /// <summary>
-    /// Performs an implicit conversion from <see cref="OptimizationResult"/> to <see cref="bool"/>.
+    /// Converts to a ValueTask of <see cref="OptimizationResult"/>.
     /// </summary>
-    /// <param name="optimizationResult">The optimization result.</param>
-    /// <returns>
-    /// The result of the conversion.
-    /// </returns>
-    [MemberNotNullWhen(true, nameof(XDocument))]
-    public static implicit operator bool(OptimizationResult optimizationResult)
+    /// <param name="optimizationResult">The project optimization result.</param>
+    public static implicit operator ValueTask<OptimizationResult>(OptimizationResult optimizationResult)
     {
-        return optimizationResult.IsSuccess;
+        return new ValueTask<OptimizationResult>(optimizationResult);
     }
 
     /// <summary>
     /// Gets a successful result.
     /// </summary>
-    /// <param name="xDocument">The x document.</param>
+    /// <param name="xamlFileChanges">The files to be removed.</param>
     /// <param name="additionalFiles">The additional files.</param>
     /// <param name="xamlDiagnostics">The xaml diagnostics.</param>
     /// <returns>A new <see cref="OptimizationResult"/>.</returns>
-    public static OptimizationResult Success(XDocument xDocument, IReadOnlyList<AdditionalFile>? additionalFiles = null, params IReadOnlyList<XamlDiagnostic> xamlDiagnostics)
+    public static OptimizationResult From(IReadOnlyCollection<XamlFileChange>? xamlFileChanges = null, IReadOnlyCollection<AdditionalFile>? additionalFiles = null, params IReadOnlyCollection<XamlDiagnostic> xamlDiagnostics)
     {
-        return new OptimizationResult(xDocument, additionalFiles ?? [], true, xamlDiagnostics);
+        return new OptimizationResult(xamlFileChanges ?? [], additionalFiles ?? [], xamlDiagnostics);
+    }
+
+    /// <summary>
+    /// Gets a result with no modifications.
+    /// </summary>
+    /// <returns>A new <see cref="OptimizationResult"/>.</returns>
+    public static OptimizationResult None()
+    {
+        return new OptimizationResult([], [], []);
     }
 
     /// <summary>
@@ -81,23 +83,8 @@ public sealed class OptimizationResult
     /// </summary>
     /// <param name="xamlDiagnostics">The xaml diagnostics.</param>
     /// <returns>A new <see cref="OptimizationResult"/>.</returns>
-    public static OptimizationResult None(params IReadOnlyList<XamlDiagnostic> xamlDiagnostics)
+    public static OptimizationResult Report(params IReadOnlyCollection<XamlDiagnostic> xamlDiagnostics)
     {
-        return new OptimizationResult(null, [], false, xamlDiagnostics);
-    }
-
-    /// <summary>
-    /// Gets result from the specified parameters.
-    /// </summary>
-    /// <param name="isSuccess">if set to <c>true</c> [is success].</param>
-    /// <param name="xDocument">The x document.</param>
-    /// <param name="additionalFiles">The additional files.</param>
-    /// <param name="xamlDiagnostics">The xaml diagnostics.</param>
-    /// <returns>
-    /// A new <see cref="OptimizationResult" />.
-    /// </returns>
-    public static OptimizationResult From(bool isSuccess, XDocument xDocument, IReadOnlyList<AdditionalFile>? additionalFiles = null, params IReadOnlyList<XamlDiagnostic> xamlDiagnostics)
-    {
-        return new OptimizationResult(xDocument, [], isSuccess, xamlDiagnostics);
+        return new OptimizationResult([], [], xamlDiagnostics);
     }
 }
