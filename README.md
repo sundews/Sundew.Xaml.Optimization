@@ -45,6 +45,13 @@ When packaging the following rules are recommended:
 * The analyzer should be packaged into the "build" folder
 * If the optimizer requires runtime code, this should be packaged into the "lib" folder or provided as a NuGet package dependency.
 
+### In Solution optimizers:
+Adding an optimizer from within the solution is possible similar to how Roslyn analyzers work:  
+Refer to lines in the sample [here](https://github.com/sundews/Sundew.Xaml.Optimizer.Sample/blob/237476f11ebe90f34c50f8148fccfd89c779fb37/Source/Sundew.Xaml.Optimizer.Sample.Wpf/Sundew.Xaml.Optimizer.Sample.Wpf.csproj#L39-L51)
+* Assuming an optionally IL merged analyzer the dll path is determined.
+* Analyzer added to Sxo MSBuild Item
+* Anlyzer project is referenced with ReferenceOutputAssembly="False" to ensure build order, but not depending on the analyzer at runtime.
+
 ## Sample optimizers:
 * [ResourceDictionaryOptimizer](https://github.com/sundews/Sundew.Xaml.Optimizers.Wpf/blob/master/Source/Sundew.Xaml.Optimizers.Wpf/ResourceDictionary/ResourceDictionaryOptimizer.cs)
 
