@@ -2,7 +2,7 @@
 
 ## Implementing an optimizer:
 1. Create a new .NET Standard 2.0 project.
-2. Reference Sundew.Xaml.Optimization e.g. via Nuget.
+2. Reference [Sundew.Xaml.Optimization](https://www.nuget.org/packages/Sundew.Xaml.Optimization) e.g. via Nuget.
 3. Create the optimizer class and implement IXamlOptimizer. Currently WPF, Maui, Avalonia, WinUI, UWP and Xamarin.Forms are supported and each optimizer have to indicate which platforms they support.
 4. If the optimization requires code to work at runtime, this will have to be included in an additional dll or package dependency.
 5. Build and distribute dll(s), e.g. via NuGet
