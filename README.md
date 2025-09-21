@@ -1,5 +1,7 @@
 # Sundew.Xaml.Optimization
 
+The interface project for [Sundew.Xaml.Optimizer.BuildTask](https://github.com/sundews/Sundew.Xaml.Optimizer.BuildTask) - A framework for creating Xaml optimizers for WPF, Avalonia, Maui, WinUI, UWP and Xamarin.Forms.
+
 ## Implementing an optimizer:
 1. Create a new .NET Standard 2.0 project.
 2. Reference [Sundew.Xaml.Optimization](https://www.nuget.org/packages/Sundew.Xaml.Optimization) e.g. via Nuget.
