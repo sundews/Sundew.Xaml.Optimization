@@ -22,13 +22,16 @@
     </PackageReleaseNotes>
     <Configurations>Debug;Release;Debug-Publish;Release-Publish;Release-Stable</Configurations>
   </PropertyGroup>
+	
   <PropertyGroup Condition="'$(ContinuousIntegrationBuild)' == 'true'">
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>    
   </PropertyGroup>
+  
   <ItemGroup>
     <EmbeddedFiles Include="$(GeneratedAssemblyInfoFile)"/>
     <None Include="..\..\README.md" Pack="true" PackagePath="\docs"/>
   </ItemGroup>
+
   <Import Project="Directory.Build.props.user" Condition="Exists('Directory.Build.props.user')"/>
 </Project>

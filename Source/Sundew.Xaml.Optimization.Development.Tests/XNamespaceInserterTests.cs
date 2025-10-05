@@ -9,6 +9,7 @@ namespace Sundew.Xaml.Optimization.UnitTests;
 
 using System.Xml.Linq;
 using AwesomeAssertions;
+using Newtonsoft.Json;
 using Sundew.Xaml.Optimization.Xml;
 using Xunit;
 

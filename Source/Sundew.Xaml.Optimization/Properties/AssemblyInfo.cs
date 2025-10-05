@@ -7,4 +7,4 @@
 
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("Sundew.Xaml.Optimization.UnitTests")]
+[assembly: InternalsVisibleTo("Sundew.Xaml.Optimization.Development.Tests")]

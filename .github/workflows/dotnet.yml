@@ -16,7 +16,7 @@ jobs:
     name: .NET
     runs-on: windows-latest
     env:
-      solutionPath: ./Source/Sundew.Xaml.Optimization.sln
+      solutionPath: ./Source/Sundew.Xaml.Optimization.slnx
       versioningProjectPath: ./Source/Sundew.Xaml.Optimization/Sundew.Xaml.Optimization.csproj
       repository: 'https://sundew-dev:${{ secrets.SUNDEW_DEV_TOKEN }}@github.com/sundews/Sundew.Xaml.Optimization.git'
       source: 'https://api.nuget.org/v3/index.json'
