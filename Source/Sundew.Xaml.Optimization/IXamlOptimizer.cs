@@ -21,9 +21,9 @@ public interface IXamlOptimizer
     /// <summary>
     /// Optimizes the project.
     /// </summary>
-    /// <param name="xamlFiles">The xaml diagnostics.</param>
+    /// <param name="xamlFiles">The xaml files.</param>
     /// <param name="xamlPlatformInfo">The xaml platform info.</param>
     /// <param name="projectInfo">The project info.</param>
     /// <returns>The result of the project optimization.</returns>
-    ValueTask<OptimizationResult> OptimizeAsync(IReadOnlyList<XamlFile> xamlFiles, XamlPlatformInfo xamlPlatformInfo, ProjectInfo projectInfo);
+    ValueTask<OptimizationResult> OptimizeAsync(XamlFiles xamlFiles, XamlPlatformInfo xamlPlatformInfo, ProjectInfo projectInfo);
 }

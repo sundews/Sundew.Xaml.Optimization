@@ -61,6 +61,7 @@ public static class Parallelize
             workerTasks[i] = Task.Factory.StartNew(
                     async () =>
                     {
+                        TItem? item = default;
                         try
                         {
                             while (true)
@@ -71,7 +72,6 @@ public static class Parallelize
                                     break;
                                 }
 
-                                TItem item;
                                 await semaphore.WaitAsync().ConfigureAwait(true);
                                 try
                                 {
@@ -90,10 +90,15 @@ public static class Parallelize
                                 await func(item, cts.Token).ConfigureAwait(true);
                             }
                         }
-                        catch
+                        catch (OperationCanceledException)
                         {
                             cts.Cancel();
                             throw;
+                        }
+                        catch (Exception exception)
+                        {
+                            cts.Cancel();
+                            throw new ItemException(exception, item);
                         }
                     },
                     CancellationToken.None,

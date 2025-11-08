@@ -7,7 +7,6 @@
 
 namespace Sundew.Xaml.Optimization.Xml;
 
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 /// <summary>
@@ -17,7 +16,7 @@ public interface IXamlFileProvider
 {
     /// <summary>Gets the file references.</summary>
     /// <value>The file references.</value>
-    IReadOnlyList<XamlFile> XamlFiles { get; }
+    XamlFiles XamlFiles { get; }
 
     /// <summary>
     /// Load the xaml file.
