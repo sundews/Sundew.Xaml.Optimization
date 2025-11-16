@@ -44,35 +44,24 @@ public static class Parallelize
         ParallelOptions parallelOptions,
         Func<TItem, CancellationToken, Task> func)
     {
-        var maxDegreeOfParallelism = parallelOptions.MaxDegreeOfParallelism;
-        if (maxDegreeOfParallelism < 0)
-        {
-            maxDegreeOfParallelism = Environment.ProcessorCount;
-        }
-
+        var maxDegreeOfParallelism = Math.Min(Math.Max(1, parallelOptions.MaxDegreeOfParallelism), Environment.ProcessorCount);
         var cancellationToken = parallelOptions.CancellationToken;
-        var scheduler = parallelOptions.TaskScheduler ?? TaskScheduler.Current;
+        var taskScheduler = parallelOptions.TaskScheduler ?? TaskScheduler.Current;
         var enumerator = source.GetEnumerator();
-        var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-        var semaphore = new SemaphoreSlim(1, 1);
-        var workerTasks = new Task[maxDegreeOfParallelism];
+        var cancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+        var semaphoreSlim = new SemaphoreSlim(1, 1);
+        var tasks = new Task[maxDegreeOfParallelism];
         for (int i = 0; i < maxDegreeOfParallelism; i++)
         {
-            workerTasks[i] = Task.Factory.StartNew(
+            tasks[i] = Task.Factory.StartNew(
                     async () =>
                     {
                         TItem? item = default;
                         try
                         {
-                            while (true)
+                            while (ContinueOrThrowIfCancellationRequested(cancellationToken))
                             {
-                                if (cts.IsCancellationRequested)
-                                {
-                                    cancellationToken.ThrowIfCancellationRequested();
-                                    break;
-                                }
-
-                                await semaphore.WaitAsync().ConfigureAwait(true);
+                                await semaphoreSlim.WaitAsync().ConfigureAwait(true);
                                 try
                                 {
                                     if (!enumerator.MoveNext())
@@ -84,42 +73,48 @@ public static class Parallelize
                                 }
                                 finally
                                 {
-                                    semaphore.Release();
+                                    semaphoreSlim.Release();
                                 }
 
-                                await func(item, cts.Token).ConfigureAwait(true);
+                                await func(item, cancellationTokenSource.Token).ConfigureAwait(true);
                             }
                         }
                         catch (OperationCanceledException)
                         {
-                            cts.Cancel();
+                            cancellationTokenSource.Cancel();
                             throw;
                         }
                         catch (Exception exception)
                         {
-                            cts.Cancel();
+                            cancellationTokenSource.Cancel();
                             throw new ItemException(exception, item);
                         }
                     },
                     CancellationToken.None,
                     TaskCreationOptions.DenyChildAttach,
-                    scheduler)
+                    taskScheduler)
                 .Unwrap();
         }
 
-        return Task.WhenAll(workerTasks).ContinueWith(
-            t =>
-        {
-            using (enumerator)
-            using (cts)
-            using (semaphore)
+        return Task.WhenAll(tasks).ContinueWith(
+            task =>
             {
-            }
+                using (enumerator)
+                using (cancellationTokenSource)
+                using (semaphoreSlim)
+                {
+                }
 
-            return t;
-        },
+                return task;
+            },
             CancellationToken.None,
             TaskContinuationOptions.DenyChildAttach | TaskContinuationOptions.ExecuteSynchronously,
             TaskScheduler.Default).Unwrap();
+    }
+
+    private static bool ContinueOrThrowIfCancellationRequested(CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        return true;
     }
 }

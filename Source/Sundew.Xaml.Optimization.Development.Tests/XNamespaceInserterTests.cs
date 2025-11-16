@@ -5,11 +5,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Sundew.Xaml.Optimization.UnitTests;
+namespace Sundew.Xaml.Optimization.Development.Tests;
 
 using System.Xml.Linq;
 using AwesomeAssertions;
-using Newtonsoft.Json;
 using Sundew.Xaml.Optimization.Xml;
 using Xunit;
 
