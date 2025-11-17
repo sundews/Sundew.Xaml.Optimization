@@ -15,7 +15,7 @@ using System.Xml.Linq;
 /// <param name="Document">The document.</param>
 /// <param name="Reference">The file.</param>
 /// <param name="LineEndings">The line endings.</param>
-public sealed record XamlFile(XDocument Document, IFileReference Reference, string LineEndings)
+public record XamlFile(XDocument Document, IFileReference Reference, string LineEndings)
 {
     /// <summary>
     /// Returns a <see cref="string" /> that represents this instance.
