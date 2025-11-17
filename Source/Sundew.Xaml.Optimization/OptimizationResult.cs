@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 /// <summary>The result of a xaml optimization.</summary>
-public sealed class OptimizationResult
+public sealed record OptimizationResult
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="OptimizationResult" /> class.

@@ -10,7 +10,7 @@ namespace Sundew.Xaml.Optimization;
 /// <summary>
 /// Represents a change to be made to a XAML file, including the file itself and the action to be performed.
 /// </summary>
-public sealed class XamlFileChange
+public sealed record XamlFileChange
 {
     private XamlFileChange(XamlFile file, XamlFileAction action)
     {

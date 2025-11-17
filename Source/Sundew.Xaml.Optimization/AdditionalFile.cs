@@ -10,7 +10,7 @@ namespace Sundew.Xaml.Optimization;
 using System.IO;
 
 /// <summary>Provides additional file during xaml optimizations.</summary>
-public class AdditionalFile
+public record AdditionalFile
 {
     /// <summary>Initializes a new instance of the <see cref="AdditionalFile"/> class.</summary>
     /// <param name="itemType">The file action.</param>

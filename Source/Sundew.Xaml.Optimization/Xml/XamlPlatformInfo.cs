@@ -13,7 +13,7 @@ using System.Xml.Linq;
 /// <summary>
 /// Contains xaml platform information.
 /// </summary>
-public class XamlPlatformInfo
+public sealed class XamlPlatformInfo
 {
     /// <summary>Initializes a new instance of the <see cref="XamlPlatformInfo"/> class.</summary>
     /// <param name="xamlPlatform">The xaml platform.</param>

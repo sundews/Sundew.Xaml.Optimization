@@ -12,7 +12,7 @@ using System.IO;
 using Sundew.Xaml.Optimization.Xml;
 
 /// <summary>Contains information about the project being built.</summary>
-public sealed class ProjectInfo
+public sealed record ProjectInfo
 {
     /// <summary>Initializes a new instance of the <see cref="ProjectInfo"/> class.</summary>
     /// <param name="assemblyName">Name of the assembly.</param>
