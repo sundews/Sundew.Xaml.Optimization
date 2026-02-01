@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="XNamespaceInserterTests.cs" company="Sundews">
 // Copyright (c) Sundews. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
@@ -10,7 +10,7 @@ namespace Sundew.Xaml.Optimization.Development.Tests;
 using System.Xml.Linq;
 using AwesomeAssertions;
 using Sundew.Xaml.Optimization.Xml;
-using Xunit;
+using TUnit.Core;
 
 public class XNamespaceInserterTests
 {
@@ -21,7 +21,7 @@ public class XNamespaceInserterTests
 
     private static readonly XName PresentationOptionsName = XNamespace.Xmlns + PoName;
 
-    [Fact]
+    [Test]
     public void EnsureXmlNamespaceAttribute_When_NamespaceAlreadyExists_Then_ResultShouldBeExistingAttribute()
     {
         var input = $@"<ResourceDictionary
@@ -43,7 +43,7 @@ public class XNamespaceInserterTests
         xDocument.ToString().Should().Be(XDocument.Parse(input).ToString());
     }
 
-    [Fact]
+    [Test]
     public void
         EnsureXmlNamespaceAttribute_When_NamespaceDoesNotExist_Then_ResultShouldBeNewAttributeAndNamespaceShouldBeAdded()
     {
@@ -72,7 +72,7 @@ public class XNamespaceInserterTests
         xDocument.ToString().Should().Be(XDocument.Parse(expectedResult).ToString());
     }
 
-    [Fact]
+    [Test]
     public void
         EnsureXmlNamespaceAttribute_When_NamespaceDoesNotExistButPrefixDoes_Then_ResultShouldBeNewAttributeAndNamespaceShouldBeAddedWithIncrementedPrefix()
     {
@@ -101,7 +101,7 @@ public class XNamespaceInserterTests
         xDocument.ToString().Should().Be(XDocument.Parse(expectedResult).ToString());
     }
 
-    [Fact]
+    [Test]
     public void
         EnsureXmlNamespaceAttribute_When_NamespaceDoesNotExistAndInsertAfterNamespaceOccursAfterMaxInsertIndex_Then_ResultShouldBeNewAttributeAndNamespaceShouldBeAddedAtMaxIndex()
     {
@@ -134,7 +134,7 @@ public class XNamespaceInserterTests
         xDocument.ToString().Should().Be(XDocument.Parse(expectedResult).ToString());
     }
 
-    [Fact]
+    [Test]
     public void
         EnsureXmlNamespaceAttribute_When_NamespaceDoesNotExistAndMultipleInsertAfterNamespacesAreSpecified_Then_ResultShouldBeNewAttributeAndNamespaceShouldBeAddedAfterSpecifiedNamespaces()
     {
@@ -170,7 +170,7 @@ public class XNamespaceInserterTests
         xDocument.ToString().Should().Be(XDocument.Parse(expectedResult).ToString());
     }
 
-    [Fact]
+    [Test]
     public void EnsureXmlNamespaceAttribute_When_NamespaceDoesNotExistAndSomeInsertAfterNamespacesExists_Then_ResultShouldBeNewAttributeAndNamespaceShouldBeAddedAfterSpecifiedNamespaces()
     {
         var input = $@"<ResourceDictionaryText
@@ -203,7 +203,7 @@ public class XNamespaceInserterTests
         xDocument.ToString().Should().Be(XDocument.Parse(expectedResult).ToString());
     }
 
-    [Fact]
+    [Test]
     public void EnsureXmlNamespaceAttribute_When_NamespaceDoesNotExistAndInsertAfterNamespaceDoesNotExist_Then_ResultShouldBeNewAttributeAtTheEnd()
     {
         var input = $@"<ResourceDictionaryText

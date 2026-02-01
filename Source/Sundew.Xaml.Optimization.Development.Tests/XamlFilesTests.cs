@@ -14,11 +14,11 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using AwesomeAssertions;
 using NSubstitute;
-using Xunit;
+using TUnit.Core;
 
 public class XamlFilesTests
 {
-    [Fact]
+    [Test]
     public async Task ForEachAsync_Then_AllFilesShouldBeProcessed()
     {
         string[] input = [GetXaml("Application"), GetXaml("UserControl"), GetXaml("Page"), GetXaml("Window")];
