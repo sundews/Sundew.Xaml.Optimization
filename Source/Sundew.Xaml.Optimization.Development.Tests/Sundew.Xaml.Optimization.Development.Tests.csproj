@@ -9,4 +9,11 @@
     <ProjectReference Include="..\Sundew.Xaml.Optimization\Sundew.Xaml.Optimization.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Update="coverlet.collector">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
 </Project>
